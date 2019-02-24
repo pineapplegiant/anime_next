@@ -2,6 +2,8 @@ from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
+import random
+
 
 def simp_get(url):
 
@@ -28,9 +30,11 @@ def soup_it_up():
         if a.get('token') == 'shows-portraits':
             shows.append(a)
 
-    for show in shows:
-        x, y, z = list(map(str.strip, show.text.strip().split('\n')))
-        temp_str += "{}: {}\nHere's the link! {}\n".format(x, z, "https://www.crunchyroll.com" + show.get('href'))
+# Random number
+    random_num  = random.randrange(0, len(shows))
+#    for show in shows:
+    x, y, z = list(map(str.strip, shows[random_num].text.strip().split('\n')))
+    temp_str += "{}: {}\nHere's the link! {}\n".format(x, z, "https://www.crunchyroll.com" + shows[random_num].get('href'))
         # print(list(map(str.strip, show.text.strip().split('\n'))))
 
     return temp_str
