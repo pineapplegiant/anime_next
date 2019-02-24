@@ -17,15 +17,22 @@ def simp_get(url):
         print("Error during request to {}: {}".format(url, str(e)))
         return None
 
-soup = BeautifulSoup(simp_get("https://www.crunchyroll.com/videos/anime/popular"), 'html.parser')
+def soup_it_up():
+    soup = BeautifulSoup(simp_get("https://www.crunchyroll.com/videos/anime/popular"), 'html.parser')
 
-shows = []
+    shows = []
 
-for a in soup.select('a'):
-    if a.get('token') == 'shows-portraits':
-        shows.append(a)
+    temp_str = str()
 
-for show in shows:
-    x, y, z = list(map(str.strip, show.text.strip().split('\n')))
-    print("{}: {}\nHere's the link! {}".format(x, z, "https://www.crunchyroll.com" + show.get('href')))
-    # print(list(map(str.strip, show.text.strip().split('\n'))))
+    for a in soup.select('a'):
+        if a.get('token') == 'shows-portraits':
+            shows.append(a)
+
+    for show in shows:
+        x, y, z = list(map(str.strip, show.text.strip().split('\n')))
+        temp_str += "{}: {}\nHere's the link! {}\n".format(x, z, "https://www.crunchyroll.com" + show.get('href'))
+        # print(list(map(str.strip, show.text.strip().split('\n'))))
+
+    return temp_str
+
+print(soup_it_up())
